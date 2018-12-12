@@ -44,6 +44,8 @@ class Grid extends Component {
                 return SORT_DESC;
             case SORT_DESC:
                 return SORT_ASC;
+            default:
+                throw new Error('Unsupported sort status: ', sortStatus);
         }
     };
 
@@ -61,6 +63,8 @@ class Grid extends Component {
                     if (rowA[field] > rowB[field]) return -1;
                     else return 0;
                 };
+            default:
+                throw new Error('Unsupported sort status: ', sortStatus);
         }
     };
 
