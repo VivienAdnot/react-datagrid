@@ -23,7 +23,7 @@ class Grid extends Component {
             currentPaginationMaxIndex: props.pageSize - 1,
             isPrevButtonActive: false,
             isNextButtonActive: true,
-            selectedOption: { value: 1, label: '1' }
+            selectedOption: config.defaulSelectedOption
         };
     }
 
@@ -190,7 +190,6 @@ class Grid extends Component {
     };
 
     render() {
-        const { selectedOption } = this.state;
         return (
             <div className="grid">
                 <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
@@ -207,7 +206,7 @@ class Grid extends Component {
                 </button>
 
                 <Select
-                    value={selectedOption}
+                    value={this.state.selectedOption}
                     onChange={this.handleChange}
                     options={this.state.paginations}
                 />
