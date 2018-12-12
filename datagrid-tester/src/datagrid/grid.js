@@ -7,6 +7,31 @@ import config from './config';
 const SORT_ASC = 1;
 const SORT_DESC = 2;
 
+const createSelectOption = (value) => ({
+    value,
+    label: (value).toString()
+});
+
+const getAllPaginations = (dataLength, pageSize) => {
+    var integerDivision = Math.trunc(dataLength / pageSize);
+    if (dataLength / pageSize) {
+        integerDivision += 1;
+    }
+
+    return Array.from({ length: integerDivision }, (value, index) => {
+        return createSelectOption(index + 1);
+    });
+};
+
+const getPaginationFromIndex = (index, pageSize) => {
+    const paginationStart = (index - 1) * pageSize;
+    const paginationEnd = paginationStart + pageSize - 1;
+    return {
+        paginationStart,
+        paginationEnd
+    };
+};
+
 class Grid extends Component {
     constructor(props) {
         super(props);
@@ -16,27 +41,17 @@ class Grid extends Component {
                 id: column,
                 sortStatus: SORT_ASC
             })),
-            //data: props.data,
-            dataSubset: props.data.slice(0, props.pageSize),
-            paginations: this.getAllPaginations(),
-            currentPaginationMinIndex: 0,
-            currentPaginationMaxIndex: props.pageSize - 1,
+            data: props.data,
+            paginations: getAllPaginations(props.data.length, props.pageSize),
+            paginationStart: 0,
+            paginationEnd: props.pageSize - 1,
             isPrevButtonActive: false,
             isNextButtonActive: true,
             selectedOption: config.defaulSelectedOption
         };
     }
 
-    getAllPaginations = () => {
-        var integerDivision = Math.trunc(this.props.data.length / this.props.pageSize);
-        if (this.props.data.length / this.props.pageSize) {
-            integerDivision += 1;
-        }
 
-        return Array.from({ length: integerDivision }, (value, index) => {
-            return { value: index + 1, label: (index + 1).toString() };
-        });
-    };
 
     getNextToggleSortStatus = sortStatus => {
         switch (sortStatus) {
@@ -92,7 +107,6 @@ class Grid extends Component {
     };
 
     onDeleteRow = rowId => {
-        console.log(rowId);
         this.setState(prevState => {
             return {
                 data: prevState.data.filter(x => x.id !== rowId)
@@ -104,96 +118,68 @@ class Grid extends Component {
 
     prevSubset = () => {
         this.setState(prevState => {
-            const currentPaginationMinIndex =
-                prevState.currentPaginationMinIndex - this.props.pageSize;
-            const currentPaginationMaxIndex =
-                prevState.currentPaginationMaxIndex - this.props.pageSize;
+            const paginationStart = prevState.paginationStart - this.props.pageSize;
+            const paginationEnd = prevState.paginationEnd - this.props.pageSize;
 
-            const isPrevButtonActive = currentPaginationMinIndex > 0;
-            const isNextButtonActive = currentPaginationMaxIndex < this.props.data.length - 1;
+            const isPrevButtonActive = paginationStart > 0;
+            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
 
             return {
-                selectedOption: {
-                    value: prevState.selectedOption.value - 1,
-                    label: (prevState.selectedOption.value - 1).toString()
-                },
-                currentPaginationMinIndex,
-                currentPaginationMaxIndex,
+                selectedOption: createSelectOption(prevState.selectedOption.value - 1),
+                paginationStart,
+                paginationEnd,
                 isPrevButtonActive,
-                isNextButtonActive,
-                dataSubset: this.props.data.slice(
-                    currentPaginationMinIndex,
-                    currentPaginationMaxIndex + 1
-                )
+                isNextButtonActive
             };
         });
     };
 
     nextSubset = () => {
         this.setState(prevState => {
-            const currentPaginationMinIndex =
-                prevState.currentPaginationMinIndex + this.props.pageSize;
-            const currentPaginationMaxIndex =
-                prevState.currentPaginationMaxIndex + this.props.pageSize;
+            const paginationStart = prevState.paginationStart + this.props.pageSize;
+            const paginationEnd = prevState.paginationEnd + this.props.pageSize;
 
-            const isPrevButtonActive = currentPaginationMinIndex > 0;
-            const isNextButtonActive = currentPaginationMaxIndex < this.props.data.length - 1;
+            const isPrevButtonActive = paginationStart > 0;
+            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
 
             return {
-                selectedOption: {
-                    value: prevState.selectedOption.value + 1,
-                    label: (prevState.selectedOption.value + 1).toString()
-                },
-                currentPaginationMinIndex,
-                currentPaginationMaxIndex,
+                selectedOption: createSelectOption(prevState.selectedOption.value + 1),
+                paginationStart,
+                paginationEnd,
                 isPrevButtonActive,
-                isNextButtonActive,
-                dataSubset: this.props.data.slice(
-                    currentPaginationMinIndex,
-                    currentPaginationMaxIndex + 1
-                )
+                isNextButtonActive
             };
         });
     };
 
-    getPaginationFromIndex = index => {
-        const currentPaginationMinIndex = (index - 1) * this.props.pageSize;
-        const currentPaginationMaxIndex = currentPaginationMinIndex + this.props.pageSize - 1;
-        return {
-            currentPaginationMinIndex,
-            currentPaginationMaxIndex
-        };
-    };
+
 
     handleChange = selectedOption => {
         this.setState(prevState => {
             const {
-                currentPaginationMinIndex,
-                currentPaginationMaxIndex
-            } = this.getPaginationFromIndex(selectedOption.value);
+                paginationStart,
+                paginationEnd
+            } = getPaginationFromIndex(selectedOption.value, this.props.pageSize);
 
-            const isPrevButtonActive = currentPaginationMinIndex > 0;
-            const isNextButtonActive = currentPaginationMaxIndex < this.props.data.length - 1;
+            const isPrevButtonActive = paginationStart > 0;
+            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
 
             return {
                 selectedOption,
-                currentPaginationMinIndex,
-                currentPaginationMaxIndex,
+                paginationStart,
+                paginationEnd,
                 isPrevButtonActive,
-                isNextButtonActive,
-                dataSubset: this.props.data.slice(
-                    currentPaginationMinIndex,
-                    currentPaginationMaxIndex + 1
-                )
+                isNextButtonActive
             };
         });
     };
 
     render() {
+        const subset = this.state.data.slice(this.state.paginationStart, this.state.paginationEnd + 1);
         return (
             <div className="grid">
                 <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
-                {this.state.dataSubset.map((entry, index) => (
+                {subset.map((entry) => (
                     <Row
                         columns={this.props.columns}
                         key={entry.id}
