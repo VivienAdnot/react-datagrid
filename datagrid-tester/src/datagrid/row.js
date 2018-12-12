@@ -5,8 +5,8 @@ class Row extends Component {
     render() {
         return (
             <Fragment>
-                {Object.values(this.props.data).map((value, index) => (
-                    <Cell key={index} value={value} />
+                {this.props.columns.map(({accessor}, index) => (
+                    <Cell key={index} value={this.props.entry[accessor]} />
                 ))}
                 <span>
                     <button onClick={this.props.onDeleteRow}>delete</button>

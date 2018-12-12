@@ -194,11 +194,12 @@ class Grid extends Component {
         return (
             <div className="grid">
                 <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
-                {this.state.dataSubset.map((entries, index) => (
+                {this.state.dataSubset.map((entry, index) => (
                     <Row
-                        key={entries.id}
-                        data={entries}
-                        onDeleteRow={() => this.onDeleteRow(entries.id)}
+                        columns={this.props.columns}
+                        key={entry.id}
+                        entry={entry}
+                        onDeleteRow={() => this.onDeleteRow(entry.id)}
                     />
                 ))}
                 <button onClick={this.prevSubset} disabled={!this.state.isPrevButtonActive}>

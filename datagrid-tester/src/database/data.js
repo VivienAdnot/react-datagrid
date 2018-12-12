@@ -8,17 +8,17 @@ const data = [
     },
     {
         id: 'B',
-        firstname: 'Bob',
         lastname: 'Tromp',
-        jobTitle: 'Dev ops',
-        company: 'Cirpack'
+        firstname: 'Bob',
+        company: 'Cirpack',
+        jobTitle: 'Dev ops'
     },
     {
-        id: 'C',
+        jobTitle: 'CTO',
         firstname: 'Roger',
         lastname: 'Danger',
-        jobTitle: 'CTO',
-        company: 'Cirpack'
+        company: 'Cirpack',
+        id: 'C'
     },
     {
         id: 'D',

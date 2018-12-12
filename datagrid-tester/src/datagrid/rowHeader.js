@@ -4,9 +4,9 @@ class RowHeader extends Component {
     render() {
         return (
             <Fragment>
-                {this.props.columns.map((name, index) => (
-                    <span key={index} onDoubleClick={() => this.props.sortColumn(name)}>
-                        <strong>{name}</strong>
+                {this.props.columns.map(({ header }, index) => (
+                    <span key={index} onDoubleClick={() => this.props.sortColumn(header)}>
+                        <strong>{header}</strong>
                     </span>
                 ))}
                 <span>
