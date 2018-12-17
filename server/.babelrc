@@ -1,0 +1,16 @@
+{
+    "presets": [
+        "env",
+        "stage-2"
+    ],
+    "plugins": [
+        [
+            "module-resolver", {
+                "root": ["./src"]
+            }
+        ]
+    ],
+    "ignore": [
+        "node_modules/*"
+    ]
+}
