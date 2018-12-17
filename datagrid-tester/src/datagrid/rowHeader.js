@@ -1,21 +1,19 @@
 import React, { Component, Fragment } from 'react';
+import CellHeader from './cellHeader';
 
 class RowHeader extends Component {
+
     render() {
         return (
             <Fragment>
-                <div className="grid-thead">
-                    <div className="grid-tr">
+                <thead className="grid-thead">
+                    <tr className="grid-tr">
                         {this.props.columns.map(({ header }, index) => (
-                            <div className="grid-th grid-resizable-header" key={index} onDoubleClick={() => this.props.sortColumn(header)}>
-                                <div className="grid-resizable-header-content">{header}</div>
-                                <div className="grid-resizer"></div>
-                            </div>
+                            <CellHeader key={index} value={header} onDoubleClick={() => this.props.sortColumn(header)}></CellHeader>
                         ))}
-                        <div className="grid-th grid-resizable-header">Delete column</div>
-                    </div>
-
-                </div>
+                        <CellHeader value={""}></CellHeader>
+                    </tr>
+                </thead>
             </Fragment>
         );
     }

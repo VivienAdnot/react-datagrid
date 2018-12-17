@@ -18,9 +18,10 @@ class Cell extends Component {
     render() {
         return (
             <Fragment>
-                <div className="grid-td">
+                <td className="grid-td">
+                {/* {this.state.value} */}
                     <input type="text" value={this.state.value} onChange={this.handleChange} />
-                </div>
+                </td>
             </Fragment>
         );
     }

@@ -175,10 +175,10 @@ class Grid extends Component {
         const subset = this.state.data.slice(this.state.paginationStart, this.state.paginationEnd + 1);
         return (
             <div className="grid">
-                <div className="grid-table">
+                <table className="grid-table">
                     <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
 
-                    <div className="grid-tbody">
+                    <tbody className="grid-tbody">
                     {subset.map((entry) => (
                         <Row
                             columns={this.props.columns}
@@ -187,8 +187,8 @@ class Grid extends Component {
                             onDeleteRow={() => this.onDeleteRow(entry.id)}
                         />
                     ))}
-                    </div>
-                </div>
+                    </tbody>
+                </table>
 
                 <button onClick={this.prevSubset} disabled={!this.state.canPrev}>
                     previous

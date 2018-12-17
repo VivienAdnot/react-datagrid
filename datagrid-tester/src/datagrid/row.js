@@ -5,14 +5,14 @@ class Row extends Component {
     render() {
         return (
             <Fragment>
-                <div className="grid-tr">
+                <tr className="grid-tr">
                     {this.props.columns.map(({accessor}, index) => (
                         <Cell key={index} value={this.props.entry[accessor]} />
                     ))}
-                    <div className="grid-td">
+                    <td className="grid-td">
                         <button onClick={this.props.onDeleteRow}>delete</button>
-                    </div>
-                </div>
+                    </td>
+                </tr>
             </Fragment>
         );
     }
