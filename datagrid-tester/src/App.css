@@ -12,24 +12,24 @@ input[type='text'] {
   border: none;*/
 }
 
-table {
+.grid-table {
   border-collapse: collapse;
-  margin: 0 auto;
+  margin: 10px auto;
 }
 
 /* Zebra striping */
-tr:nth-of-type(odd) {
+.grid-table tr:nth-of-type(odd) {
   background: #eee;
 }
 
-td, th {
+.grid-table td, .grid-table th {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
   font-size: 18px;
 }
 
-th {
+.grid-table th {
   background: #3498db;
   color: white;
   font-weight: bold;
@@ -37,21 +37,36 @@ th {
   position: relative;
   padding-right: 30px;
   min-width: 30px;
+  user-select: none;
 }
 
-td {
+.grid-table th:last-child {
+  padding-right: 0;
+}
+
+.grid-table td {
   cursor: cell;
 }
 
-tbody tr:hover {
+.grid-table tbody tr:hover {
   background: #ccc;
 }
 
-button, .btn {
+.grid-table button, .grid-table .btn {
   cursor: pointer;
 }
 
-.btn-chevron {
+.grid-table .btn-chevron {
   position: absolute;
   right: 5px;
+}
+
+.grid .pagination {
+  display: flex;
+  justify-content: center;
+}
+
+.grid .btn-pagination {
+  width: 60px;
+  margin: 0 10px;
 }

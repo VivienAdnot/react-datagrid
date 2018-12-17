@@ -187,19 +187,23 @@ class Grid extends Component {
                     </tbody>
                 </table>
 
-                <button onClick={this.prevSubset} disabled={!this.state.canPrev}>
-                    previous
-                </button>
 
-                <Select
-                    value={this.state.selectedOption}
-                    onChange={this.handleChange}
-                    options={this.state.paginations}
-                />
 
-                <button onClick={this.nextSubset} disabled={!this.state.canNext}>
-                    next
-                </button>
+                <div className="pagination">
+                    <button className="btn btn-pagination" onClick={this.prevSubset} disabled={!this.state.canPrev}>
+                        Previous
+                    </button>
+
+                    <Select
+                        value={this.state.selectedOption}
+                        onChange={this.handleChange}
+                        options={this.state.paginations}
+                    />
+
+                    <button className="btn btn-pagination" onClick={this.nextSubset} disabled={!this.state.canNext}>
+                        Next
+                    </button>
+                </div>
 
             </div>
         );
