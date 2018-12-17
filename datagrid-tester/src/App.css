@@ -11,3 +11,39 @@ input[type='text'] {
   padding: 1%;
   border: none;*/
 }
+
+table {
+  border-collapse: collapse;
+  margin: 0 auto;
+}
+
+/* Zebra striping */
+tr:nth-of-type(odd) {
+  background: #eee;
+}
+
+th {
+  background: #3498db;
+  color: white;
+  font-weight: bold;
+  cursor: col-resize;
+}
+
+td, th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  text-align: left;
+  font-size: 18px;
+}
+
+td {
+  cursor: cell;
+}
+
+tbody tr:hover {
+  background: #ccc;
+}
+
+button {
+  cursor: pointer;
+}

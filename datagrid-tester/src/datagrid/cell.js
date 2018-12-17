@@ -12,12 +12,8 @@ class Cell extends Component {
         this.elRef = React.createRef();
     }
 
-    componentDidMount() {
-        this.width = this.elRef.current.clientWidth;
-    }
-
     onStartEdit = () => {
-        this.width = this.elRef.current.clientWidth;
+        this.width = this.elRef.current.clientWidth - 26;
         this.setState({
             readonly: false
         });
@@ -45,7 +41,7 @@ class Cell extends Component {
                     (!this.state.readonly) ? (
                         <input
                         type="text"
-                        style={{width: (this.width - 8)}}
+                        style={{width: (this.width)}}
                         value={this.state.value}
                         onChange={this.handleChange}
                         onMouseOut={this.onEndEdit}

@@ -6,7 +6,7 @@ class Cell extends Component {
         super(props);
 
         this.state = {
-            width: undefined
+            width: 'auto'
         }
 
         this.elRef = React.createRef();
@@ -39,33 +39,17 @@ class Cell extends Component {
     render() {
         return (
             <Fragment>
-                {
-                    (this.state.width) ? (
-                        <th
-                        ref={this.elRef}
-                        className="grid-th"
-                        onMouseDown={this.onMouseDown}
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseOut={this.onMouseUp}
-                        style={{width: this.state.width}}
-                    >
-                        {this.props.value}
-                    </th>
-                    )
-                    : (
-                        <th
-                        ref={this.elRef}
-                        className="grid-th"
-                        onMouseDown={this.onMouseDown}
-                        onMouseMove={this.onMouseMove}
-                        onMouseUp={this.onMouseUp}
-                        onMouseOut={this.onMouseUp}
-                    >
-                        {this.props.value}
-                    </th>
-                    )
-                }
+                <th
+                    ref={this.elRef}
+                    className="grid-th"
+                    onMouseDown={this.onMouseDown}
+                    onMouseMove={this.onMouseMove}
+                    onMouseUp={this.onMouseUp}
+                    onMouseOut={this.onMouseUp}
+                    style={{width: this.state.width}}
+                >
+                    {this.props.value}
+                </th>
 
             </Fragment>
         );
