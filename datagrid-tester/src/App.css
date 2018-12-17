@@ -22,18 +22,21 @@ tr:nth-of-type(odd) {
   background: #eee;
 }
 
-th {
-  background: #3498db;
-  color: white;
-  font-weight: bold;
-  cursor: col-resize;
-}
-
 td, th {
   padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
   font-size: 18px;
+}
+
+th {
+  background: #3498db;
+  color: white;
+  font-weight: bold;
+  cursor: col-resize;
+  position: relative;
+  padding-right: 30px;
+  min-width: 30px;
 }
 
 td {
@@ -44,6 +47,11 @@ tbody tr:hover {
   background: #ccc;
 }
 
-button {
+button, .btn {
   cursor: pointer;
+}
+
+.btn-chevron {
+  position: absolute;
+  right: 5px;
 }

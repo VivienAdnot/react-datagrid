@@ -2,10 +2,7 @@ import React, { Component } from 'react';
 import Select from 'react-select';
 import Row from './row';
 import RowHeader from './rowHeader';
-import config from './config';
-
-const SORT_ASC = 1;
-const SORT_DESC = 2;
+import { config, SORT_ASC, SORT_DESC } from './config';
 
 const createSelectOption = (value) => ({
     value,
@@ -78,7 +75,7 @@ class Grid extends Component {
         }
     };
 
-    sortColumn = columnId => {
+    onSortColumn = columnId => {
         const column = this.state.columns.find(column => column.header === columnId);
         const sortStatus = column.sortStatus;
 
@@ -176,7 +173,7 @@ class Grid extends Component {
         return (
             <div className="grid">
                 <table className="grid-table">
-                    <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
+                    <RowHeader columns={this.state.columns} onSortColumn={this.onSortColumn} />
 
                     <tbody className="grid-tbody">
                     {subset.map((entry) => (

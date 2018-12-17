@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react';
+import { ChevronUp, ChevronDown } from 'react-feather';
+import { SORT_ASC } from './config';
 
-class Cell extends Component {
+class CellHeader extends Component {
 
     constructor(props) {
         super(props);
@@ -36,6 +38,24 @@ class Cell extends Component {
         this.pressed = false;
     }
 
+    getSortingSymbol = () => {
+        if (this.props.noSort) {
+            return null;
+        }
+
+        return (this.props.sortStatus === SORT_ASC) ? (
+            <ChevronUp
+                className="btn btn-chevron"
+                onClick={this.props.onSortColumn}
+            ></ChevronUp>
+        ) : (
+            <ChevronDown
+                className="btn btn-chevron"
+                onClick={this.props.onSortColumn}
+            ></ChevronDown>
+        );
+    }
+
     render() {
         return (
             <Fragment>
@@ -49,6 +69,9 @@ class Cell extends Component {
                     style={{width: this.state.width}}
                 >
                     {this.props.value}
+                    {
+                        this.getSortingSymbol()
+                    }
                 </th>
 
             </Fragment>
@@ -56,4 +79,9 @@ class Cell extends Component {
     }
 }
 
-export default Cell;
+CellHeader.defaultProps = {
+    value: '',
+    noSort: false
+};
+
+export default CellHeader;
