@@ -47,6 +47,7 @@ class Cell extends Component {
                         onMouseDown={this.onMouseDown}
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onMouseUp}
+                        onMouseOut={this.onMouseUp}
                         style={{width: this.state.width}}
                     >
                         {this.props.value}
@@ -59,6 +60,7 @@ class Cell extends Component {
                         onMouseDown={this.onMouseDown}
                         onMouseMove={this.onMouseMove}
                         onMouseUp={this.onMouseUp}
+                        onMouseOut={this.onMouseUp}
                     >
                         {this.props.value}
                     </th>
