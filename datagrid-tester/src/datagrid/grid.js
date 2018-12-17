@@ -3,6 +3,7 @@ import Select from 'react-select';
 import Row from './row';
 import RowHeader from './rowHeader';
 import { config, SORT_ASC, SORT_DESC } from './config';
+import './grid.css';
 
 const createSelectOption = (value) => ({
     value,
@@ -186,8 +187,6 @@ class Grid extends Component {
                     ))}
                     </tbody>
                 </table>
-
-
 
                 <div className="pagination">
                     <button className="btn btn-pagination" onClick={this.prevSubset} disabled={!this.state.canPrev}>

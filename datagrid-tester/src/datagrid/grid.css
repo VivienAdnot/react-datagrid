@@ -1,0 +1,61 @@
+.grid-table {
+    border-collapse: collapse;
+    margin: 10px auto;
+}
+
+/* Zebra striping */
+.grid-table tr:nth-of-type(odd) {
+    background: #eee;
+}
+
+.grid-table td,
+.grid-table th {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-size: 18px;
+}
+
+.grid-table th {
+    background: #3498db;
+    color: white;
+    font-weight: bold;
+    cursor: col-resize;
+    position: relative;
+    padding-right: 30px;
+    min-width: 30px;
+    user-select: none;
+}
+
+.grid-table th:last-child {
+    padding-right: 0;
+}
+
+.grid-table td {
+    cursor: cell;
+}
+
+.grid-table tbody tr:hover {
+    background: #ccc;
+}
+
+.grid button,
+.grid .btn {
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.grid-table .btn-chevron {
+    position: absolute;
+    right: 5px;
+}
+
+.grid .pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.grid .btn-pagination {
+    width: 120px;
+    margin: 0 10px;
+}
