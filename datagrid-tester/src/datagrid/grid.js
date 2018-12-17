@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Select from 'react-select';
 import Row from './row';
 import RowHeader from './rowHeader';
@@ -12,7 +12,7 @@ const createSelectOption = (value) => ({
     label: (value).toString()
 });
 
-const getAllPaginations = (dataLength, pageSize) => {
+const createAllOptions = (dataLength, pageSize) => {
     var integerDivision = Math.trunc(dataLength / pageSize);
     if (dataLength / pageSize) {
         integerDivision += 1;
@@ -23,7 +23,7 @@ const getAllPaginations = (dataLength, pageSize) => {
     });
 };
 
-const getPaginationFromIndex = (index, pageSize) => {
+const getPaginationLimitsFromIndex = (index, pageSize) => {
     const paginationStart = (index - 1) * pageSize;
     const paginationEnd = paginationStart + pageSize - 1;
     return {
@@ -38,22 +38,21 @@ class Grid extends Component {
 
         this.state = {
             columns: props.columns.map(column => ({
-                id: column,
+                ...column,
                 sortStatus: SORT_ASC
             })),
             data: props.data,
-            paginations: getAllPaginations(props.data.length, props.pageSize),
+            subset: props.data.slice(0, props.pageSize),
+            paginations: createAllOptions(props.data.length, props.pageSize),
             paginationStart: 0,
             paginationEnd: props.pageSize - 1,
-            isPrevButtonActive: false,
-            isNextButtonActive: true,
+            canPrev: false,
+            canNext: true,
             selectedOption: config.defaulSelectedOption
         };
     }
 
-
-
-    getNextToggleSortStatus = sortStatus => {
+    toggleSort = sortStatus => {
         switch (sortStatus) {
             case SORT_ASC:
                 return SORT_DESC;
@@ -68,15 +67,11 @@ class Grid extends Component {
         switch (sortStatus) {
             case SORT_ASC:
                 return (rowA, rowB) => {
-                    if (rowA[field] < rowB[field]) return -1;
-                    if (rowA[field] > rowB[field]) return 1;
-                    else return 0;
+                    return rowA[field].localeCompare(rowB[field]);
                 };
             case SORT_DESC:
                 return (rowA, rowB) => {
-                    if (rowA[field] < rowB[field]) return 1;
-                    if (rowA[field] > rowB[field]) return -1;
-                    else return 0;
+                    return rowB[field].localeCompare(rowA[field]);
                 };
             default:
                 throw new Error('Unsupported sort status: ', sortStatus);
@@ -84,17 +79,18 @@ class Grid extends Component {
     };
 
     sortColumn = columnId => {
-        const column = this.state.columns.find(column => column.id === columnId);
+        const column = this.state.columns.find(column => column.header === columnId);
         const sortStatus = column.sortStatus;
-        const rowComparer = this.getRowComparer(sortStatus, columnId);
-        const nextStatus = this.getNextToggleSortStatus(column.sortStatus);
+
+        const rowComparer = this.getRowComparer(sortStatus, column.accessor);
+        const nextStatus = this.toggleSort(column.sortStatus);
 
         this.setState(prevState => {
             return {
                 columns: prevState.columns.map(column => {
-                    if (column.id === columnId) {
+                    if (column.header === columnId) {
                         return {
-                            id: columnId,
+                            ...column,
                             sortStatus: nextStatus
                         };
                     }
@@ -107,9 +103,12 @@ class Grid extends Component {
     };
 
     onDeleteRow = rowId => {
+
         this.setState(prevState => {
             return {
-                data: prevState.data.filter(x => x.id !== rowId)
+                data: prevState.data.filter(x => x.id !== rowId),
+                paginations: createAllOptions(prevState.data.length - 1, this.props.pageSize),
+                canNext: prevState.paginationEnd < prevState.data.length - 1
             };
         });
 
@@ -121,15 +120,15 @@ class Grid extends Component {
             const paginationStart = prevState.paginationStart - this.props.pageSize;
             const paginationEnd = prevState.paginationEnd - this.props.pageSize;
 
-            const isPrevButtonActive = paginationStart > 0;
-            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
+            const canPrev = paginationStart > 0;
+            const canNext = paginationEnd < this.props.data.length - 1;
 
             return {
                 selectedOption: createSelectOption(prevState.selectedOption.value - 1),
                 paginationStart,
                 paginationEnd,
-                isPrevButtonActive,
-                isNextButtonActive
+                canPrev,
+                canNext
             };
         });
     };
@@ -139,37 +138,35 @@ class Grid extends Component {
             const paginationStart = prevState.paginationStart + this.props.pageSize;
             const paginationEnd = prevState.paginationEnd + this.props.pageSize;
 
-            const isPrevButtonActive = paginationStart > 0;
-            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
+            const canPrev = paginationStart > 0;
+            const canNext = paginationEnd < this.props.data.length - 1;
 
             return {
                 selectedOption: createSelectOption(prevState.selectedOption.value + 1),
                 paginationStart,
                 paginationEnd,
-                isPrevButtonActive,
-                isNextButtonActive
+                canPrev,
+                canNext
             };
         });
     };
-
-
 
     handleChange = selectedOption => {
         this.setState(prevState => {
             const {
                 paginationStart,
                 paginationEnd
-            } = getPaginationFromIndex(selectedOption.value, this.props.pageSize);
+            } = getPaginationLimitsFromIndex(selectedOption.value, this.props.pageSize);
 
-            const isPrevButtonActive = paginationStart > 0;
-            const isNextButtonActive = paginationEnd < this.props.data.length - 1;
+            const canPrev = paginationStart > 0;
+            const canNext = paginationEnd < this.props.data.length - 1;
 
             return {
                 selectedOption,
                 paginationStart,
                 paginationEnd,
-                isPrevButtonActive,
-                isNextButtonActive
+                canPrev,
+                canNext
             };
         });
     };
@@ -178,16 +175,22 @@ class Grid extends Component {
         const subset = this.state.data.slice(this.state.paginationStart, this.state.paginationEnd + 1);
         return (
             <div className="grid">
-                <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
-                {subset.map((entry) => (
-                    <Row
-                        columns={this.props.columns}
-                        key={entry.id}
-                        entry={entry}
-                        onDeleteRow={() => this.onDeleteRow(entry.id)}
-                    />
-                ))}
-                <button onClick={this.prevSubset} disabled={!this.state.isPrevButtonActive}>
+                <div className="grid-table">
+                    <RowHeader columns={this.props.columns} sortColumn={this.sortColumn} />
+
+                    <div className="grid-tbody">
+                    {subset.map((entry) => (
+                        <Row
+                            columns={this.props.columns}
+                            key={entry.id}
+                            entry={entry}
+                            onDeleteRow={() => this.onDeleteRow(entry.id)}
+                        />
+                    ))}
+                    </div>
+                </div>
+
+                <button onClick={this.prevSubset} disabled={!this.state.canPrev}>
                     previous
                 </button>
 
@@ -197,9 +200,10 @@ class Grid extends Component {
                     options={this.state.paginations}
                 />
 
-                <button onClick={this.nextSubset} disabled={!this.state.isNextButtonActive}>
+                <button onClick={this.nextSubset} disabled={!this.state.canNext}>
                     next
                 </button>
+
             </div>
         );
     }
