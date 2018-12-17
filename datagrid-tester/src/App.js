@@ -1,31 +1,54 @@
 import React, { Component } from 'react';
-import './App.css';
+import axios from 'axios';
 
+import './App.css';
 import Grid from './datagrid/grid';
-import data from './database/data';
 
 const columns = [{
   header: 'Id',
   accessor: 'id'
 }, {
   header: 'Firstname',
-  accessor: 'firstname'
+  accessor: 'first_name'
 }, {
   header: 'Lastname',
-  accessor: 'lastname'
+  accessor: 'last_name'
 }, {
-  header: 'Job Title',
-  accessor: 'jobTitle'
+  header: 'Email',
+  accessor: 'email'
 }, {
-  header: 'Company',
-  accessor: 'company'
+  header: 'Gender',
+  accessor: 'gender'
+}, {
+  header: 'IP Address',
+  accessor: 'ip_address'
 }];
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:8089/api/data')
+    .then(({ data }) => {
+      this.setState({ data });
+    });
+  }
+
   render() {
     return (
       <div className="App">
-          <Grid data={data} columns={columns} pageSize={3} />
+      {
+        (this.state.data.length) && (
+          <Grid data={this.state.data} columns={columns} pageSize={10} />
+        )
+      }
       </div>
     );
   }

@@ -1,6 +1,8 @@
+import data from './data';
+
 exports.getData = (req, res, next) => {
 
-    res.data = 'ok';
+    res.data = data;
     next();
 
 };
