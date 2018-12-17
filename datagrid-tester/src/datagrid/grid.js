@@ -12,7 +12,7 @@ const createSelectOption = (value) => ({
 
 const createAllOptions = (dataLength, pageSize) => {
     var integerDivision = Math.trunc(dataLength / pageSize);
-    if (dataLength / pageSize) {
+    if (dataLength % pageSize) {
         integerDivision += 1;
     }
 
@@ -194,6 +194,7 @@ class Grid extends Component {
                     </button>
 
                     <Select
+                        className="select"
                         value={this.state.selectedOption}
                         onChange={this.handleChange}
                         options={this.state.paginations}
