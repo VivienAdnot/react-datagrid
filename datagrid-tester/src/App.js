@@ -50,7 +50,7 @@ class App extends Component {
     return (
       <div className="App">
       {
-        (this.state.data.length) && (
+        (!!this.state.data.length) && (
           <Grid data={this.state.data} columns={columns} pageSize={50} />
         )
       }
