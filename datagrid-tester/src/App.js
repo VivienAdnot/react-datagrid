@@ -4,6 +4,12 @@ import axios from 'axios';
 import './App.css';
 import Grid from './datagrid/grid';
 
+// batch of 1000 rows
+const smallBatchRoute = 'http://localhost:8091/api/data/smallbatch';
+
+// batch of 100000 rows
+//const bigBatchRoute = 'http://localhost:8091/api/data/bigbatch';
+
 const columns = [{
   header: 'Id',
   accessor: 'id'
@@ -16,9 +22,6 @@ const columns = [{
 }, {
   header: 'Email',
   accessor: 'email'
-}, {
-  header: 'Gender',
-  accessor: 'gender'
 }, {
   header: 'IP Address',
   accessor: 'ip_address'
@@ -35,7 +38,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://localhost:8089/api/data')
+    axios.get(smallBatchRoute)
     .then(({ data }) => {
       this.setState({ data });
     });
@@ -46,7 +49,7 @@ class App extends Component {
       <div className="App">
       {
         (this.state.data.length) && (
-          <Grid data={this.state.data} columns={columns} pageSize={10} />
+          <Grid data={this.state.data} columns={columns} pageSize={50} />
         )
       }
       </div>

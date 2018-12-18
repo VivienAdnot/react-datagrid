@@ -25,12 +25,10 @@ class Cell extends Component {
         });
     }
 
-    handleChange = event => {
+    onEdit = event => {
         this.setState({
             value: event.target.value
         });
-
-        //call back-end
     };
 
     render() {
@@ -43,7 +41,7 @@ class Cell extends Component {
                         type="text"
                         style={{width: (this.width)}}
                         value={this.state.value}
-                        onChange={this.handleChange}
+                        onChange={this.onEdit}
                         onMouseOut={this.onEndEdit}
                         onMouseLeave={this.onEndEdit} />
                     ) : (

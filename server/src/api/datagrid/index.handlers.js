@@ -1,8 +1,16 @@
-import data from './data';
+import bigBatch from './data.json';
+import smallBatch from './data_small.json';
 
-exports.getData = (req, res, next) => {
+exports.getBigBatch = (req, res, next) => {
 
-    res.data = data;
+    res.data = bigBatch;
+    next();
+
+};
+
+exports.getSmallBatch = (req, res, next) => {
+
+    res.data = smallBatch;
     next();
 
 };

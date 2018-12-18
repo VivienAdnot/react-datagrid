@@ -3,9 +3,16 @@ import responseSender from '../../services/responseSender';
 
 const routes = [{
     method: 'GET',
-    path: '/api/data',
+    path: '/api/data/bigbatch',
     handlers: [
-        handlers.getData,
+        handlers.getBigBatch,
+        responseSender.responseSender
+    ]
+}, {
+    method: 'GET',
+    path: '/api/data/smallbatch',
+    handlers: [
+        handlers.getSmallBatch,
         responseSender.responseSender
     ]
 }];

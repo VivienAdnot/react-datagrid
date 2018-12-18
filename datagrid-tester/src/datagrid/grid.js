@@ -101,7 +101,6 @@ class Grid extends Component {
     };
 
     onDeleteRow = rowId => {
-
         this.setState(prevState => {
             return {
                 data: prevState.data.filter(x => x.id !== rowId),
@@ -109,8 +108,6 @@ class Grid extends Component {
                 canNext: prevState.paginationEnd < prevState.data.length - 1
             };
         });
-
-        //call back-end
     };
 
     prevSubset = () => {
@@ -149,7 +146,7 @@ class Grid extends Component {
         });
     };
 
-    handleChange = selectedOption => {
+    onSelectChange = selectedOption => {
         this.setState(prevState => {
             const {
                 paginationStart,
@@ -196,7 +193,7 @@ class Grid extends Component {
                     <Select
                         className="select"
                         value={this.state.selectedOption}
-                        onChange={this.handleChange}
+                        onChange={this.onSelectChange}
                         options={this.state.paginations}
                     />
 

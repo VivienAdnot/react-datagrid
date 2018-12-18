@@ -1,17 +1,7 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import { run } from './bootstrap';
+import app from './app';
 
-const app = express();
+app.listen(8091, () => {
 
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+    console.log('server listening on 8091');
 
-app.get('/', (req, res) => res.send({ serverLive: true }));
-
-run(app);
-
-app.listen(8089);
-console.log('server listening on 8089');
+});

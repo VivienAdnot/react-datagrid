@@ -35,6 +35,7 @@
     cursor: cell;
 }
 
+/* highlight */
 .grid-table tbody tr:hover {
     background: #ccc;
 }
