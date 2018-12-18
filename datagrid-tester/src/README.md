@@ -1,0 +1,1 @@
+Increase batch size in App.js

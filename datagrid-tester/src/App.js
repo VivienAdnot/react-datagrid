@@ -8,7 +8,9 @@ import Grid from './datagrid/grid';
 const smallBatchRoute = 'http://localhost:8091/api/data/smallbatch';
 
 // batch of 100000 rows
-//const bigBatchRoute = 'http://localhost:8091/api/data/bigbatch';
+const bigBatchRoute = 'http://localhost:8091/api/data/bigbatch';
+
+const route = smallBatchRoute;
 
 const columns = [{
   header: 'Id',
@@ -38,7 +40,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get(smallBatchRoute)
+    axios.get(route)
     .then(({ data }) => {
       this.setState({ data });
     });
